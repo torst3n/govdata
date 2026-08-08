@@ -20,7 +20,7 @@ import DashboardShell from "@/components/DashboardShell";
 // Page metadata for search engine optimization
 export const metadata = {
   title: "GovFacts Deutschland — Daten des Staates verständlich visualisiert",
-  description: "Ein interaktives Dashboard für deutsche Haushaltsdaten, Demografie, Wirtschaftswachstum und Inflation. Inspiriert von USAFacts.",
+  description: "Ein interaktives Dashboard für deutsche Haushaltsdaten, Demografie, Wirtschaftswachstum und Inflation.",
 };
 
 export default async function Home() {
@@ -126,9 +126,7 @@ export default async function Home() {
         {/* Footer */}
         <footer className="app-footer">
           <p>
-            Inspiriert von <a href="https://usafacts.org" target="_blank" rel="noopener noreferrer">USAFacts.org</a>. 
-            Datengrundlage: <a href="https://www.govdata.de" target="_blank" rel="noopener noreferrer">GovData.de</a>, 
-            Bundesministerium der Finanzen & Statistisches Bundesamt (Destatis).
+            Datengrundlage: Bundesministerium der Finanzen & Statistisches Bundesamt (Destatis).
           </p>
           <p className="mt-1">
             Erstellt &copy; {new Date().getFullYear()} GovFacts Deutschland. Open-Source-Transparenz.

@@ -43,16 +43,16 @@ export default function DashboardShell({
   const [activeTab, setActiveTab] = useState("gesamtfinanzen");
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col lg:flex-row lg:gap-8 items-start">
-      {/* Sidebar navigation on desktop, horizontal scroll on mobile */}
-      <nav aria-label="Dashboard Navigation" className="w-full lg:w-72 lg:shrink-0 lg:sticky lg:top-6 z-10 mb-6 lg:mb-0">
-        <TabsList className="flex flex-row lg:flex-col w-full gap-1.5 p-2 bg-zinc-900/90 border border-zinc-800 rounded-2xl overflow-x-auto no-scrollbar scrollbar-none shadow-xl">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col gap-6">
+      {/* Top horizontal navigation bar spanning full width */}
+      <nav aria-label="Dashboard Navigation" className="w-full z-10">
+        <TabsList className="w-full flex flex-wrap md:flex-nowrap gap-1.5 p-2 bg-zinc-900/90 border border-zinc-800 rounded-2xl overflow-x-auto no-scrollbar scrollbar-none shadow-xl">
           {tabsConfig.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
               id={`tab-btn-${tab.id}`}
-              className="flex items-center gap-3 px-4 py-3 w-auto lg:w-full justify-start text-xs lg:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap shrink-0"
+              className="flex items-center gap-2.5 px-3.5 py-3 shrink-0 lg:shrink lg:flex-1 justify-center text-xs lg:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
             >
               {tab.icon}
               <span>{tab.label}</span>
@@ -61,8 +61,8 @@ export default function DashboardShell({
         </TabsList>
       </nav>
 
-      {/* Render selected view */}
-      <main className="flex-1 w-full min-w-0">
+      {/* Render selected view with 100% main content width */}
+      <main className="w-full min-w-0">
         {activeTab === "gesamtfinanzen" && (
           <section id="section-gesamtfinanzen">
             <DoubleSankeyDiagram data={nationalFinancesData} />
@@ -278,7 +278,7 @@ export default function DashboardShell({
                   Bedeutung von Langzeitdaten
                 </h4>
                 <p>
-                  Ähnlich wie bei USAFacts ist ein isolierter Datenpunkt selten aussagekräftig. Erst der Verlauf über 15 Jahre verdeutlicht Kriseneffekte (wie die COVID-19-Pandemie in 2020 mit negativem Wirtschaftswachstum und steigender Arbeitslosigkeit oder die hohe Inflation 2022 nach Beginn des Ukraine-Krieges) und langfristige demografische Trends.
+                  Ein isolierter Datenpunkt ist selten aussagekräftig. Erst der Verlauf über 15 Jahre verdeutlicht Kriseneffekte (wie die COVID-19-Pandemie in 2020 mit negativem Wirtschaftswachstum und steigender Arbeitslosigkeit oder die hohe Inflation 2022 nach Beginn des Ukraine-Krieges) und langfristige demografische Trends.
                 </p>
               </div>
               <div className="info-card">
@@ -303,7 +303,7 @@ export default function DashboardShell({
             
             <div className="flex flex-col gap-4 text-zinc-300 text-sm leading-relaxed">
               <p>
-                Dieses Projekt zeigt, wie staatliche Daten aus Deutschland transparent, verständlich und nachvollziehbar visualisiert werden können &mdash; inspiriert vom Vorbild USAFacts.org. 
+                Dieses Projekt zeigt, wie staatliche Daten aus Deutschland transparent, verständlich und nachvollziehbar visualisiert werden können. 
               </p>
               
               <h4 className="text-white font-semibold text-base mt-2">Genutzte Datensätze & offizielle Quellen:</h4>
@@ -338,10 +338,7 @@ export default function DashboardShell({
               </ul>
 
               <div className="border-t border-zinc-800 pt-6 mt-4">
-                <h4 className="text-white font-semibold text-base mb-2">Wie man dieses Projekt erweitern kann:</h4>
-                <p className="mb-4">
-                  Die Metadaten dieser Datenquellen sind zentral über das deutsche Open-Data-Portal <a href="https://www.govdata.de" target="_blank" className="text-blue-400 underline">GovData.de</a> katalogisiert. Über die dort angebotene CKAN-API können Aktualisierungen und weitere Datenkategorien (z.B. Umweltdaten, Kriminalitätsstatistiken) automatisiert bezogen werden.
-                </p>
+                <h4 className="text-white font-semibold text-base mb-2">Automatisierte Datenintegration:</h4>
                 <p>
                   Für automatisierte Pipelines in Python eignet sich das Paket <code>deutschland</code> (bereitgestellt von der <em>bundesAPI</em> Initiative), welches standardisierte Wrapper für Destatis, die Jobsuche der Arbeitsagentur und viele weitere Schnittstellen zur Verfügung stellt.
                 </p>

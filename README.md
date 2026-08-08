@@ -49,7 +49,6 @@ Alle im Dashboard genutzten Daten stammen aus frei zugänglichen Open-Data-Porta
 - **Energie & Stromnetz**: [SMARD.de (Bundesnetzagentur)](https://www.smard.de) & [Energieatlas BW](https://www.energieatlas-bw.de)
 - **Arbeitsmarkt & Pendler**: [Bundesagentur für Arbeit](https://statistik.arbeitsagentur.de)
 - **Umwelt & Gewässer**: [LUBW Badegewässerkarte](https://badegewaesserkarte.landbw.de) & [Gemeinde Ummendorf](https://www.ummendorf.de)
-- **Zentraler Datenkatalog**: [GovData.de](https://www.govdata.de)
 
 ---
 
