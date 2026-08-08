@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { DollarSign, BarChart3, Database, Info, GitCompare, Landmark, Zap, GraduationCap, ArrowLeftRight, MapPin, Compass } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import SankeyDiagram from "./SankeyDiagram";
 import DetailedSankeyDiagram from "./DetailedSankeyDiagram";
 import DoubleSankeyDiagram from "./DoubleSankeyDiagram";
@@ -29,15 +29,15 @@ export default function DashboardShell({
   ummendorfCouncilData
 }) {
   const tabsConfig = [
-    { id: "gesamtfinanzen", label: "Gesamtfinanzen (Einnahmen & Ausgaben)", icon: <ArrowLeftRight size={14} /> },
-    { id: "gesamtausgaben", label: "Ausgabenstruktur (Staat)", icon: <Landmark size={14} /> },
-    { id: "ummendorf", label: "Ummendorf-Spiegel", icon: <Compass size={14} /> },
-    { id: "local", label: "Lokal-Spiegel (Biberach)", icon: <MapPin size={14} /> },
-    { id: "haushalt", label: "Bundeshaushalt 2025", icon: <GitCompare size={14} /> },
-    { id: "energie", label: "Strom & Energiewende", icon: <Zap size={14} /> },
-    { id: "bildung", label: "Bildungsvergleich", icon: <GraduationCap size={14} /> },
-    { id: "trends", label: "Entwicklungstrends", icon: <BarChart3 size={14} /> },
-    { id: "methodik", label: "Methodik & Quellen", icon: <Database size={14} /> }
+    { id: "gesamtfinanzen", label: "Gesamtfinanzen (Einnahmen & Ausgaben)", icon: <ArrowLeftRight size={16} /> },
+    { id: "gesamtausgaben", label: "Ausgabenstruktur (Staat)", icon: <Landmark size={16} /> },
+    { id: "ummendorf", label: "Ummendorf-Spiegel", icon: <Compass size={16} /> },
+    { id: "local", label: "Lokal-Spiegel (Biberach)", icon: <MapPin size={16} /> },
+    { id: "haushalt", label: "Bundeshaushalt 2025", icon: <GitCompare size={16} /> },
+    { id: "energie", label: "Strom & Energiewende", icon: <Zap size={16} /> },
+    { id: "bildung", label: "Bildungsvergleich", icon: <GraduationCap size={16} /> },
+    { id: "trends", label: "Entwicklungstrends", icon: <BarChart3 size={16} /> },
+    { id: "methodik", label: "Methodik & Quellen", icon: <Database size={16} /> }
   ];
 
   const [activeTab, setActiveTab] = useState("gesamtfinanzen");
@@ -45,24 +45,24 @@ export default function DashboardShell({
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col lg:flex-row lg:gap-8 items-start">
       {/* Sidebar navigation on desktop, horizontal scroll on mobile */}
-      <div className="w-full lg:w-72 lg:shrink-0 lg:sticky lg:top-6 z-10">
-        <TabsList className="flex flex-row lg:flex-col w-full gap-1.5 p-2 bg-zinc-900/40 border border-zinc-800/60 rounded-xl lg:rounded-2xl overflow-x-auto no-scrollbar scrollbar-none">
+      <nav aria-label="Dashboard Navigation" className="w-full lg:w-72 lg:shrink-0 lg:sticky lg:top-6 z-10 mb-6 lg:mb-0">
+        <TabsList className="flex flex-row lg:flex-col w-full gap-1.5 p-2 bg-zinc-900/90 border border-zinc-800 rounded-2xl overflow-x-auto no-scrollbar scrollbar-none shadow-xl">
           {tabsConfig.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
               id={`tab-btn-${tab.id}`}
-              className="flex items-center gap-2.5 px-4 py-2.5 lg:py-3 text-xs lg:text-sm font-semibold rounded-lg lg:rounded-xl transition-all cursor-pointer whitespace-nowrap shrink-0 justify-center lg:justify-start"
+              className="flex items-center gap-3 px-4 py-3 w-auto lg:w-full justify-start text-xs lg:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap shrink-0"
             >
               {tab.icon}
-              {tab.label}
+              <span>{tab.label}</span>
             </TabsTrigger>
           ))}
         </TabsList>
-      </div>
+      </nav>
 
       {/* Render selected view */}
-      <main className="flex-1 w-full min-w-0 transition-all duration-300 mt-6 lg:mt-0">
+      <main className="flex-1 w-full min-w-0">
         {activeTab === "gesamtfinanzen" && (
           <section id="section-gesamtfinanzen">
             <DoubleSankeyDiagram data={nationalFinancesData} />
