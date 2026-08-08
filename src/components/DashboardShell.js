@@ -28,37 +28,93 @@ export default function DashboardShell({
   ummendorfBodenData,
   ummendorfCouncilData
 }) {
+  const governmentLevels = [
+    { id: "bund", label: "Bund (Bundesebene)", badge: "5 Ansichten", icon: <Landmark size={18} /> },
+    { id: "laender", label: "Bundesländer", badge: "1 Ansicht", icon: <GraduationCap size={18} /> },
+    { id: "lokal", label: "Lokal & Kommunen", badge: "Ummendorf & Biberach", icon: <Compass size={18} /> },
+    { id: "info", label: "Methodik & Quellen", badge: "Transparenz", icon: <Database size={18} /> },
+  ];
+
   const tabsConfig = [
-    { id: "gesamtfinanzen", label: "Gesamtfinanzen (Einnahmen & Ausgaben)", icon: <ArrowLeftRight size={16} /> },
-    { id: "gesamtausgaben", label: "Ausgabenstruktur (Staat)", icon: <Landmark size={16} /> },
-    { id: "ummendorf", label: "Ummendorf-Spiegel", icon: <Compass size={16} /> },
-    { id: "local", label: "Lokal-Spiegel (Biberach)", icon: <MapPin size={16} /> },
-    { id: "haushalt", label: "Bundeshaushalt 2025", icon: <GitCompare size={16} /> },
-    { id: "energie", label: "Strom & Energiewende", icon: <Zap size={16} /> },
-    { id: "bildung", label: "Bildungsvergleich", icon: <GraduationCap size={16} /> },
-    { id: "trends", label: "Entwicklungstrends", icon: <BarChart3 size={16} /> },
-    { id: "methodik", label: "Methodik & Quellen", icon: <Database size={16} /> }
+    // Bund (Federal Level)
+    { id: "gesamtfinanzen", level: "bund", label: "Gesamtfinanzen (Einnahmen & Ausgaben)", icon: <ArrowLeftRight size={15} /> },
+    { id: "gesamtausgaben", level: "bund", label: "Ausgabenstruktur (Staat)", icon: <Landmark size={15} /> },
+    { id: "haushalt", level: "bund", label: "Bundeshaushalt 2025", icon: <GitCompare size={15} /> },
+    { id: "energie", level: "bund", label: "Strom & Energiewende", icon: <Zap size={15} /> },
+    { id: "trends", level: "bund", label: "Entwicklungstrends", icon: <BarChart3 size={15} /> },
+    // Bundesländer (State Level)
+    { id: "bildung", level: "laender", label: "Bildungsvergleich (16 Bundesländer)", icon: <GraduationCap size={15} /> },
+    // Lokal (Local Level)
+    { id: "ummendorf", level: "lokal", label: "Ummendorf-Spiegel", icon: <Compass size={15} /> },
+    { id: "local", level: "lokal", label: "Lokal-Spiegel (Biberach)", icon: <MapPin size={15} /> },
+    // Info / Meta
+    { id: "methodik", level: "info", label: "Datenquellen & Methodik", icon: <Database size={15} /> }
   ];
 
   const [activeTab, setActiveTab] = useState("gesamtfinanzen");
+  const activeTabItem = tabsConfig.find((t) => t.id === activeTab) || tabsConfig[0];
+  const activeLevel = activeTabItem.level;
+
+  const handleLevelChange = (levelId) => {
+    const firstTab = tabsConfig.find((t) => t.level === levelId);
+    if (firstTab) {
+      setActiveTab(firstTab.id);
+    }
+  };
+
+  const currentLevelTabs = tabsConfig.filter((t) => t.level === activeLevel);
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col gap-6">
-      {/* Top horizontal navigation bar spanning full width */}
-      <nav aria-label="Dashboard Navigation" className="w-full z-10">
-        <TabsList className="w-full flex flex-wrap md:flex-nowrap gap-1.5 p-2 bg-zinc-900/90 border border-zinc-800 rounded-2xl overflow-x-auto no-scrollbar scrollbar-none shadow-xl">
-          {tabsConfig.map((tab) => (
-            <TabsTrigger
-              key={tab.id}
-              value={tab.id}
-              id={`tab-btn-${tab.id}`}
-              className="flex items-center gap-2.5 px-3.5 py-3 shrink-0 lg:shrink lg:flex-1 justify-center text-xs lg:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap"
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
+    <div className="w-full flex flex-col gap-6">
+      {/* Structured Hierarchical Navigation */}
+      <nav aria-label="Staatsebenen Navigation" className="w-full flex flex-col gap-3 z-10">
+        {/* Tier 1: Government Level Switcher */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 p-2 bg-zinc-950/90 border border-zinc-800 rounded-2xl shadow-xl">
+          {governmentLevels.map((lvl) => {
+            const isActive = activeLevel === lvl.id;
+            return (
+              <button
+                key={lvl.id}
+                type="button"
+                onClick={() => handleLevelChange(lvl.id)}
+                className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-3 lg:p-3.5 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? "bg-zinc-900 border-blue-500/60 shadow-md shadow-blue-500/10 text-white"
+                    : "bg-zinc-900/40 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/80"
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className={isActive ? "text-blue-400" : "text-zinc-400"}>{lvl.icon}</span>
+                  <span className="text-xs sm:text-sm font-extrabold tracking-tight">{lvl.label}</span>
+                </div>
+                <span
+                  className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                    isActive ? "bg-blue-500/20 text-blue-300 border border-blue-500/40" : "bg-zinc-800/80 text-zinc-400"
+                  }`}
+                >
+                  {lvl.badge}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Tier 2: Sub-Dashboard Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full flex flex-wrap md:flex-nowrap gap-2 p-2 bg-zinc-900/90 border border-zinc-800 rounded-2xl overflow-x-auto no-scrollbar scrollbar-none shadow-lg">
+            {currentLevelTabs.map((tab) => (
+              <TabsTrigger
+                key={tab.id}
+                value={tab.id}
+                id={`tab-btn-${tab.id}`}
+                className="flex items-center gap-2.5 px-4 py-2.5 flex-1 min-w-[160px] justify-center text-xs lg:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap shrink-0"
+              >
+                {tab.icon}
+                <span>{tab.label}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </nav>
 
       {/* Render selected view with 100% main content width */}
@@ -347,6 +403,6 @@ export default function DashboardShell({
           </section>
         )}
       </main>
-    </Tabs>
+    </div>
   );
 }

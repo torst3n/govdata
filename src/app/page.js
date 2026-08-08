@@ -78,11 +78,11 @@ export default async function Home() {
 
   return (
     <div className="flex-1 flex flex-col">
-      {/* Upper German flag accent line */}
-      <div className="flag-accent w-full h-[6px] rounded-none flex">
-        <span className="black"></span>
-        <span className="red"></span>
-        <span className="gold"></span>
+      {/* Top German flag accent line spanning 100% width */}
+      <div className="w-full h-1.5 flex overflow-hidden">
+        <span className="flex-1 bg-black"></span>
+        <span className="flex-1 bg-red-600"></span>
+        <span className="flex-1 bg-amber-400"></span>
       </div>
 
       <div className="app-container flex-1 flex flex-col justify-between">
