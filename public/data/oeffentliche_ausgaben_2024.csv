@@ -1,0 +1,43 @@
+source,target,value,stage
+Sozialversicherung,Soziale Sicherung,490.0,stage1
+Sozialversicherung,Gesundheit,360.0,stage1
+Bund,Soziale Sicherung,170.0,stage1
+Bund,Verteidigung,65.0,stage1
+Bund,Allgemeine Dienste,95.0,stage1
+Bund,Verkehr & Infrastruktur,50.0,stage1
+Bund,Gesundheit,15.0,stage1
+Bund,Bildung & Forschung,30.0,stage1
+Bund,Sonstiges,65.0,stage1
+Länder,Bildung & Forschung,120.0,stage1
+Länder,Allgemeine Dienste,130.0,stage1
+Länder,Soziale Sicherung,110.0,stage1
+Länder,Gesundheit,30.0,stage1
+Länder,Verkehr & Infrastruktur,20.0,stage1
+Länder,Sonstiges,60.0,stage1
+Kommunen,Bildung & Forschung,30.0,stage1
+Kommunen,Soziale Sicherung,80.0,stage1
+Kommunen,Sonstiges,122.0,stage1
+Kommunen,Gesundheit,15.0,stage1
+Kommunen,Allgemeine Dienste,25.0,stage1
+Kommunen,Verkehr & Infrastruktur,10.0,stage1
+Soziale Sicherung,Gesetzliche Rente,380.0,stage2
+Soziale Sicherung,Bürgergeld & Sozialhilfe,120.0,stage2
+Soziale Sicherung,Beamtenpensionen,80.0,stage2
+Soziale Sicherung,Sonstiges (Kindergeld / Pflege),270.0,stage2
+Gesundheit,Gesetzliche Krankenversicherung (GKV),340.0,stage2
+Gesundheit,Krankenhäuser & Kliniken,80.0,stage2
+Bildung & Forschung,Schulen & Kitas,110.0,stage2
+Bildung & Forschung,Hochschulen & Universitäten,40.0,stage2
+Bildung & Forschung,Wissenschaft & Forschung,30.0,stage2
+Verkehr & Infrastruktur,Schienen & ÖPNV,35.0,stage2
+Verkehr & Infrastruktur,Straßen & Autobahnen,30.0,stage2
+Verkehr & Infrastruktur,Digitale Infrastruktur,15.0,stage2
+Verteidigung,Bundeswehr Ausrüstung,25.0,stage2
+Verteidigung,Personal & Betrieb,40.0,stage2
+Allgemeine Dienste,Zinsen für Staatsschulden,45.0,stage2
+Allgemeine Dienste,Verwaltung & Justiz,175.0,stage2
+Allgemeine Dienste,Entwicklungszusammenarbeit & EU,30.0,stage2
+Sonstiges,Polizei & Katastrophenschutz,60.0,stage2
+Sonstiges,Umweltschutz & Klima,65.0,stage2
+Sonstiges,Freizeit / Kultur / Sport,62.0,stage2
+Sonstiges,Wohnungswesen & Kommunales,60.0,stage2

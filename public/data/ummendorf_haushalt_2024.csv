@@ -1,0 +1,21 @@
+source,target,value,category
+Gewerbesteuer,Bauhof & Ortsverwaltung,1.8,Einnahmen-Verwendung
+Gewerbesteuer,Straßen & Umlach-Renaturierung,1.5,Einnahmen-Verwendung
+Gewerbesteuer,Feuerwehr,0.8,Einnahmen-Verwendung
+Gewerbesteuer,Zins- & Tilgungsdienst,0.04,Einnahmen-Verwendung
+Gewerbesteuer,Kindergärten (Kita),0.46,Einnahmen-Verwendung
+Einkommensteuer-Anteil,Kindergärten (Kita),2.5,Einnahmen-Verwendung
+Einkommensteuer-Anteil,Grund- & Werkrealschule,1.5,Einnahmen-Verwendung
+Einkommensteuer-Anteil,Bauhof & Ortsverwaltung,1.0,Einnahmen-Verwendung
+Einkommensteuer-Anteil,Kultur & Vereine,0.5,Einnahmen-Verwendung
+Schlüsselzuweisungen,Kindergärten (Kita),0.7,Einnahmen-Verwendung
+Schlüsselzuweisungen,Grund- & Werkrealschule,0.6,Einnahmen-Verwendung
+Schlüsselzuweisungen,Bauhof & Ortsverwaltung,0.7,Einnahmen-Verwendung
+Schlüsselzuweisungen,Kultur & Vereine,0.3,Einnahmen-Verwendung
+Schlüsselzuweisungen,Feuerwehr,0.2,Einnahmen-Verwendung
+Grundsteuern (A & B),Straßen & Umlach-Renaturierung,0.8,Einnahmen-Verwendung
+Grundsteuern (A & B),Feuerwehr,0.2,Einnahmen-Verwendung
+Grundsteuern (A & B),Kultur & Vereine,0.1,Einnahmen-Verwendung
+Gebühren & Entgelte,Wasserversorgung & Abwasser,1.8,Einnahmen-Verwendung
+Rücklagen & Kredite,Wasserversorgung & Abwasser,0.6,Einnahmen-Verwendung
+Rücklagen & Kredite,Straßen & Umlach-Renaturierung,0.2,Einnahmen-Verwendung

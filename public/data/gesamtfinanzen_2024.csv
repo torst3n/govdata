@@ -1,0 +1,47 @@
+source,target,value,stage
+Lohn- & Einkommensteuer,Gemeinschaftsteuern,335.0,rev_stage1
+Umsatzsteuer (Mehrwertsteuer),Gemeinschaftsteuern,310.0,rev_stage1
+Körperschaftsteuer,Gemeinschaftsteuern,45.0,rev_stage1
+Energiesteuer,Bundessteuern,35.0,rev_stage1
+Sonstige Bundessteuern,Bundessteuern,50.0,rev_stage1
+Gewerbesteuer,Länder- & Gemeindesteuern,78.0,rev_stage1
+Grundsteuer,Länder- & Gemeindesteuern,15.0,rev_stage1
+Grunderwerb- & Erbschaftsteuer,Länder- & Gemeindesteuern,22.0,rev_stage1
+Sonstige Länder/Gemeindesteuern,Länder- & Gemeindesteuern,20.0,rev_stage1
+Sozialbeiträge,Sozialabgaben,760.0,rev_stage1
+Gebühren & sonstige Einnahmen,Sonstige Einnahmen,290.0,rev_stage1
+Gemeinschaftsteuern,Gesamteinnahmen,690.0,rev_stage2
+Bundessteuern,Gesamteinnahmen,85.0,rev_stage2
+Länder- & Gemeindesteuern,Gesamteinnahmen,135.0,rev_stage2
+Sozialabgaben,Gesamteinnahmen,760.0,rev_stage2
+Sonstige Einnahmen,Gesamteinnahmen,290.0,rev_stage2
+Gesamteinnahmen,Gesamtausgaben,1960.0,mid_stage
+Defizit (Neue Kredite),Gesamtausgaben,132.0,mid_stage
+Gesamtausgaben,Soziale Sicherung,850.0,exp_stage1
+Gesamtausgaben,Gesundheit,420.0,exp_stage1
+Gesamtausgaben,Allgemeine Dienste,250.0,exp_stage1
+Gesamtausgaben,Sonstiges,247.0,exp_stage1
+Gesamtausgaben,Bildung & Forschung,180.0,exp_stage1
+Gesamtausgaben,Verkehr & Infrastruktur,80.0,exp_stage1
+Gesamtausgaben,Verteidigung,65.0,exp_stage1
+Soziale Sicherung,Gesetzliche Rente,380.0,exp_stage2
+Soziale Sicherung,Bürgergeld & Sozialhilfe,120.0,exp_stage2
+Soziale Sicherung,Beamtenpensionen,80.0,exp_stage2
+Soziale Sicherung,Sonstiges (Kindergeld / Pflege),270.0,exp_stage2
+Gesundheit,Gesetzliche Krankenversicherung (GKV),340.0,exp_stage2
+Gesundheit,Krankenhäuser & Kliniken,80.0,exp_stage2
+Bildung & Forschung,Schulen & Kitas,110.0,exp_stage2
+Bildung & Forschung,Hochschulen & Universitäten,40.0,exp_stage2
+Bildung & Forschung,Wissenschaft & Forschung,30.0,exp_stage2
+Verkehr & Infrastruktur,Schienen & ÖPNV,35.0,exp_stage2
+Verkehr & Infrastruktur,Straßen & Autobahnen,30.0,exp_stage2
+Verkehr & Infrastruktur,Digitale Infrastruktur,15.0,exp_stage2
+Verteidigung,Bundeswehr Ausrüstung,25.0,exp_stage2
+Verteidigung,Personal & Betrieb,40.0,exp_stage2
+Allgemeine Dienste,Zinsen für Staatsschulden,45.0,exp_stage2
+Allgemeine Dienste,Verwaltung & Justiz,175.0,exp_stage2
+Allgemeine Dienste,Entwicklungszusammenarbeit & EU,30.0,exp_stage2
+Sonstiges,Polizei & Katastrophenschutz,60.0,exp_stage2
+Sonstiges,Umweltschutz & Klima,65.0,exp_stage2
+Sonstiges,Freizeit / Kultur / Sport,62.0,exp_stage2
+Sonstiges,Wohnungswesen & Kommunales,60.0,exp_stage2

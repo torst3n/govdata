@@ -1,0 +1,12 @@
+source,target,value,stage
+Ummendorf,Biberach an der Riß,2800,inbound
+Warthausen,Biberach an der Riß,2400,inbound
+Laupheim,Biberach an der Riß,1800,inbound
+Schemmerhofen,Biberach an der Riß,1500,inbound
+Maselheim,Biberach an der Riß,1200,inbound
+Andere Umlandgemeinden,Biberach an der Riß,7500,inbound
+Biberach an der Riß,Ulm,1200,outbound
+Biberach an der Riß,Ravensburg,900,outbound
+Biberach an der Riß,Stuttgart,600,outbound
+Biberach an der Riß,Friedrichshafen,450,outbound
+Biberach an der Riß,Andere Orte,1950,outbound
