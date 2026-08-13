@@ -189,10 +189,11 @@ export async function getUmmendorfBudgetData() {
   return lines.slice(1).map(line => {
     const p = line.split(',');
     return {
-      source: p[0],
-      target: p[1],
-      value: parseFloat(p[2]),
-      category: p[3]
+      year: parseInt(p[0]),
+      source: p[1],
+      target: p[2],
+      value: parseFloat(p[3]),
+      category: p[4]
     };
   });
 }

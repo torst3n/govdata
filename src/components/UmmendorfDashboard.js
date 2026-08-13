@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Landmark, Sun, Compass, Vote, Shield, Info, Droplet, TrendingUp } from "lucide-react";
+import { Landmark, Sun, Compass, Vote, Shield, Info, Droplet, TrendingUp, Calendar } from "lucide-react";
 
 // Colors for local dashboard
 const ZONING_COLORS = {
@@ -18,6 +18,7 @@ const PARTY_COLORS = {
 };
 
 export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData, councilData }) {
+  const [selectedYear, setSelectedYear] = useState(2025);
   const [selectedZone, setSelectedZone] = useState("Neubaugebiet Gassäcker");
   const [hoveredBudgetFlow, setHoveredBudgetFlow] = useState(null);
 
@@ -25,13 +26,16 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
     return <div className="text-zinc-400 p-4">Lade Ummendorfer Daten...</div>;
   }
 
+  // Filter budget data based on selected year
+  const activeYearData = budgetData.filter(d => (d.year ? d.year === selectedYear : true));
+  const currentBudgetData = activeYearData.length > 0 ? activeYearData : budgetData;
+
   // 1. Budget Sankey calculations
-  // Width 800, Height 320
-  const totalBudget = budgetData.filter(d => d.category === "Einnahmen-Verwendung").reduce((s, d) => s + d.value, 0);
+  const totalBudget = currentBudgetData.filter(d => d.category === "Einnahmen-Verwendung").reduce((s, d) => s + d.value, 0);
   const nodeWidth = 20;
 
-  const sources = Array.from(new Set(budgetData.map((d) => d.source)));
-  const targets = Array.from(new Set(budgetData.map((d) => d.target)));
+  const sources = Array.from(new Set(currentBudgetData.map((d) => d.source)));
+  const targets = Array.from(new Set(currentBudgetData.map((d) => d.target)));
 
   const scale = 240 / totalBudget; // 240px available height
   const sGap = 15;
@@ -39,8 +43,8 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
   
   let currentY = 40;
   const sourceNodes = sources.map(name => {
-    const val = budgetData.filter(d => d.source === name).reduce((s, d) => s + d.value, 0);
-    const h = val * scale;
+    const val = currentBudgetData.filter(d => d.source === name).reduce((s, d) => s + d.value, 0);
+    const h = Math.max(val * scale, 4);
     const y = currentY;
     currentY += h + sGap;
     return { name, y, h, val };
@@ -48,8 +52,8 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
 
   currentY = 40;
   const targetNodes = targets.map(name => {
-    const val = budgetData.filter(d => d.target === name).reduce((s, d) => s + d.value, 0);
-    const h = val * scale;
+    const val = currentBudgetData.filter(d => d.target === name).reduce((s, d) => s + d.value, 0);
+    const h = Math.max(val * scale, 4);
     const y = currentY;
     currentY += h + tGap;
     return { name, y, h, val };
@@ -58,13 +62,13 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
   const sourceOffsets = Object.fromEntries(sourceNodes.map(n => [n.name, n.y]));
   const targetOffsets = Object.fromEntries(targetNodes.map(n => [n.name, n.y]));
 
-  const flows = budgetData.map((flow, idx) => {
+  const flows = currentBudgetData.map((flow, idx) => {
     const sy = sourceOffsets[flow.source];
-    const sh = flow.value * scale;
+    const sh = Math.max(flow.value * scale, 2);
     sourceOffsets[flow.source] += sh;
 
     const ty = targetOffsets[flow.target];
-    const th = flow.value * scale;
+    const th = Math.max(flow.value * scale, 2);
     targetOffsets[flow.target] += th;
 
     return { ...flow, idx, sy, sh, ty, th };
@@ -73,7 +77,6 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
   // 2. Bodenrichtwerte Line Chart math
   const filteredBoden = bodenData.filter(d => d.zone === selectedZone);
   const years = filteredBoden.map(d => d.year);
-  const values = filteredBoden.map(d => d.valueSqm);
 
   const cWidth = 500;
   const cHeight = 200;
@@ -81,7 +84,6 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
   const graphW = cWidth - cPad.left - cPad.right;
   const graphH = cHeight - cPad.top - cPad.bottom;
 
-  const minV = 0;
   const maxV = 450;
 
   const getBodenX = (idx) => cPad.left + (idx / (filteredBoden.length - 1)) * graphW;
@@ -91,8 +93,6 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
   const areaPath = `${linePath} L ${getBodenX(filteredBoden.length - 1).toFixed(1)},${(cPad.top + graphH).toFixed(1)} L ${getBodenX(0).toFixed(1)},${(cPad.top + graphH).toFixed(1)} Z`;
 
   // 3. Council Seat Semicircle Dot Map
-  // Semicircle layout: 14 seats total
-  // FW: 6, CDU: 5, UB: 3
   const totalSeats = 14;
   const seatColors = [
     ...Array(6).fill(PARTY_COLORS["Freie Wähler (FW)"]),
@@ -102,7 +102,6 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
 
   const cX = 140, cY = 120, radius = 70;
   const seatsPoints = Array.from({ length: totalSeats }).map((_, idx) => {
-    // Distribute angles evenly from 180deg (left) to 0deg (right)
     const angleDeg = 180 - (idx / (totalSeats - 1)) * 180;
     const rad = (angleDeg * Math.PI) / 180;
     const x = cX + radius * Math.cos(rad);
@@ -111,7 +110,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
   });
 
   return (
-    <div className="trends-container">
+    <div className="trends-container flex flex-col gap-6">
       {/* Header */}
       <div className="border-b border-zinc-850 pb-5">
         <h3 className="text-xl font-bold text-white flex items-center gap-2" id="ummendorf-dashboard-title">
@@ -119,19 +118,54 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
           Ummendorf-Spiegel (Gemeinde-Haushalt, Badesee & Wohnen)
         </h3>
         <p className="text-zinc-400 text-xs mt-1">
-          Visualisierte Open-Data-Kennzahlen direkt aus Ummendorf und dem Ortsteil Fischbach.
+          Visualisierte Open-Data-Kennzahlen direkt aus Ummendorf und dem Ortsteil Fischbach (Stand: 2024–2026).
         </p>
       </div>
 
-      {/* CONCEPT 1: Gemeindehaushalt Sankey */}
+      {/* CONCEPT 1: Gemeindehaushalt Sankey with Year Switcher */}
       <div className="info-card border border-zinc-850 bg-zinc-950/40 p-6 rounded-2xl">
-        <h4 className="text-white font-bold text-sm flex items-center gap-2 mb-1">
-          <Landmark size={18} className="text-emerald-400" />
-          1. Der Ummendorfer Gemeindehaushalt (Volumen: {totalBudget.toFixed(1)} Mio. €)
-        </h4>
-        <p className="text-zinc-500 text-[11px] mb-6">
-          Trägt die Haupteinnahmen der Gemeinde (Gewerbesteuer, Einkommensteueranteil) zu den dörflichen Ausgabenschwerpunkten ab (2024).
-        </p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div>
+            <h4 className="text-white font-bold text-sm flex items-center gap-2 mb-1">
+              <Landmark size={18} className="text-emerald-400" />
+              1. Der Ummendorfer Gemeindehaushalt ({selectedYear}: {totalBudget.toFixed(1)} Mio. €)
+            </h4>
+            <p className="text-zinc-400 text-xs">
+              {selectedYear === 2024 && "Rechnungsergebnis 2024 (Gewerbesteuer 340%, Grundsteuer B 340%)."}
+              {selectedYear === 2025 && "Haushaltssatzung 2025 (Gewerbesteuer 360%, Grundsteuer B 320% nach Reform)."}
+              {selectedYear === 2026 && "Mittelfristige Finanzplanung 2026 (Schwerpunkt Hochwasserschutz & Kitas)."}
+            </p>
+          </div>
+
+          {/* Year Switcher Segmented Control */}
+          <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 p-1 rounded-xl self-start md:self-auto shrink-0 shadow-md">
+            <span className="text-[11px] font-bold text-zinc-500 px-2 flex items-center gap-1">
+              <Calendar size={13} className="text-zinc-400" />
+              Jahr:
+            </span>
+            {[
+              { year: 2024, label: "2024" },
+              { year: 2025, label: "2025 ★" },
+              { year: 2026, label: "2026 (Plan)" }
+            ].map((opt) => {
+              const isActive = selectedYear === opt.year;
+              return (
+                <button
+                  key={opt.year}
+                  type="button"
+                  onClick={() => setSelectedYear(opt.year)}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                    isActive
+                      ? "bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/20"
+                      : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         <div className="relative w-full h-[320px] overflow-x-auto">
           <svg viewBox="0 0 800 320" className="overflow-visible min-w-[700px] mx-auto" width="100%" height="100%">
@@ -179,7 +213,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
                     {n.name}
                   </text>
                   <text x="168" y={n.y + n.h/2 + 10} textAnchor="end" dominantBaseline="middle" className="text-[8px] font-bold fill-zinc-500">
-                    {n.val.toFixed(1)} Mio. €
+                    {n.val.toFixed(2)} Mio. €
                   </text>
                 </g>
               ))}
@@ -194,7 +228,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
                     {n.name}
                   </text>
                   <text x="612" y={n.y + n.h/2 + 10} textAnchor="start" dominantBaseline="middle" className="text-[8px] font-bold fill-zinc-500">
-                    {n.val.toFixed(1)} Mio. €
+                    {n.val.toFixed(2)} Mio. €
                   </text>
                 </g>
               ))}
@@ -215,7 +249,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
           <div>
             <h4 className="text-white font-bold text-sm flex items-center gap-2 mb-1">
               <Droplet size={18} className="text-sky-400" />
-              2. Der Badesee- & Umwelt-Monitor (Saison 2024)
+              2. Der Badesee- & Umwelt-Monitor (Saison 2024/2025)
             </h4>
             <p className="text-zinc-500 text-[11px] mb-4">
               Messdaten zur Badewasserqualität des Ummendorfer Badesees und des Pegelstands der Umlach.
@@ -232,8 +266,8 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
               <div className="bg-zinc-900/50 border border-zinc-850 p-3.5 rounded-xl flex flex-col items-center justify-center text-center">
                 <Sun className="text-amber-400 mb-1" size={24} />
                 <span className="text-[9px] text-zinc-500 font-bold uppercase">Ø Wassertemperatur</span>
-                <span className="text-xs font-black text-white mt-0.5">23,6 °C (August-Rekord)</span>
-                <span className="text-[10px] text-zinc-400 mt-1">Badebetrieb geöffnet</span>
+                <span className="text-xs font-black text-white mt-0.5">23,6 °C (Sommer-Peak)</span>
+                <span className="text-[10px] text-zinc-400 mt-1">Badebetrieb regulär geöffnet</span>
               </div>
             </div>
 
@@ -260,7 +294,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
           </div>
           
           <div className="text-[10px] text-zinc-500 border-t border-zinc-900/80 pt-3 mt-6 flex justify-between items-center">
-            <span>Quelle: <a href="https://badegewaesserkarte.landbw.de/?data_id=dataSource_18-Gesamt_UVB_BGW_2577%3A26%2CdataSource_14-Badegewaesser_94%3A26%2CdataSource_17-Gesamt_UVB_BGW_2577%3A26&amp;dlg=Liste-der-ueberwachten-Badestellen&amp;page=Seite-1&amp;views=Legende---" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline font-semibold">Landesanstalt für Umwelt BW (LUBW Badegewässerkarte)</a>.</span>
+            <span>Quelle: <a href="https://badegewaesserkarte.landbw.de" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:underline font-semibold">Landesanstalt für Umwelt BW (LUBW Badegewässerkarte)</a>.</span>
             <a href="https://www.ummendorf.de/de/freizeit-vereine/sport-freizeit/badesee" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">ummendorf.de (Badesee)</a>
           </div>
         </div>
@@ -273,7 +307,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
               3. Bodenrichtwert-Entwicklung (BORIS-BW)
             </h4>
             <p className="text-zinc-500 text-[11px] mb-4">
-              Preisentwicklung von Baugrundstücken (€/m²) in verschiedenen Zonen Ummendorfs (2014–2024).
+              Preisentwicklung von Baugrundstücken (€/m²) in verschiedenen Zonen Ummendorfs (2014–2026).
             </p>
 
             {/* Zone Selector */}
@@ -387,10 +421,10 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
       </div>
 
       {/* CONCEPT 4: Gemeinderat und Wahlen */}
-      <div className="info-card border border-zinc-850 bg-zinc-950/40 p-6 rounded-2xl mt-6">
+      <div className="info-card border border-zinc-850 bg-zinc-950/40 p-6 rounded-2xl">
         <h4 className="text-white font-bold text-sm flex items-center gap-2 mb-1">
           <Vote size={18} className="text-yellow-400" />
-          4. Gemeinderat & Wahlanalyse (Gemeinderatswahl 2024)
+          4. Gemeinderat & Wahlanalyse (Gemeinderatswahl 2024–2029)
         </h4>
         <p className="text-zinc-500 text-[11px] mb-6">
           Sitzverteilung im Gemeinderat Ummendorf sowie die Verteilung der Wählerstimmen nach Ortsteilen.
@@ -402,7 +436,6 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-2">Sitzverteilung (14 Sitze)</span>
             <div className="relative w-[280px] h-[140px]">
               <svg viewBox="0 0 280 140" width="100%" height="100%">
-                {/* Draw seat circles */}
                 {seatsPoints.map((pt, idx) => (
                   <circle
                     key={`seat-${idx}`}
@@ -415,7 +448,6 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
                   />
                 ))}
                 
-                {/* Total Seats summary */}
                 <text x="140" y="125" textAnchor="middle" className="text-lg font-black fill-white">
                   14 Sitze
                 </text>
@@ -428,7 +460,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
             {/* Legend */}
             <div className="flex gap-4 text-[10px] font-bold mt-4">
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span> FW (6 Sitze)</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-zinc-650 rounded-full"></span> CDU (5 Sitze)</span>
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-zinc-600 rounded-full"></span> CDU (5 Sitze)</span>
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 bg-amber-500 rounded-full"></span> UB (3 Sitze)</span>
             </div>
           </div>
@@ -446,9 +478,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
                     <span className="text-amber-500">Fischbach: {d.fischbachPercent}%</span>
                   </div>
                 </div>
-                {/* Split Bar display */}
                 <div className="w-full h-3 bg-zinc-900 rounded-full overflow-hidden flex">
-                  {/* Kernort Share */}
                   <div
                     className="h-full transition-all duration-300"
                     style={{
@@ -458,9 +488,7 @@ export default function UmmendorfDashboard({ budgetData, badeseeData, bodenData,
                     }}
                     title={`Kernort: ${d.kernortPercent}%`}
                   />
-                  {/* Gap or spacer */}
                   <div className="w-[2px] bg-zinc-950" />
-                  {/* Fischbach Share */}
                   <div
                     style={{
                       width: `${d.fischbachPercent}%`,
